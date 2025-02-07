@@ -1,0 +1,9 @@
+@GlobalBlue_HostAddress = http://localhost:5273
+
+POST {{GlobalBlue_HostAddress}}//api/vat/calculate
+Content-Type: application/json
+
+{
+  "netAmount": 100,
+  "vatRate": 20
+}
