@@ -29,7 +29,11 @@ export const VatCalculationStore = signalStore(
           return vatCalculationService.calculateVat(vat).pipe(
             tapResponse({
               next: (calculatedVat) => patchState(store, {calculatedVat, isLoading: false}),
-              error: () => patchState(store, {error: 'Error loading cities', isLoading: false}),
+              error: (error: Error) =>
+                patchState(store, {
+                  error: `VAT calculation failed: ${error?.message ?? 'Unexpected error occurred'}`,
+                  isLoading: false,
+                }),
             })
           );
         })
