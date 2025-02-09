@@ -1,3 +1,4 @@
+<app-loading [isLoading]="isCalculationLoading()"></app-loading>
 <mat-card>
   <mat-card-header>
     <mat-card-title>VAT Calculator</mat-card-title>
@@ -40,7 +41,7 @@
         }
       </mat-form-field>
 
-      @if (vatForm.hasError('invalidAmountFields')) {
+      @if ((isFieldTouched('netAmount') || isFieldTouched('grossAmount') || isFieldTouched('vatAmount')) && vatForm.hasError('invalidAmountFields')) {
         <mat-error>Exactly one amount (Net, Gross, or VAT) must be provided.</mat-error>
       }
 
@@ -48,12 +49,12 @@
     </form>
 
 
-    @if (calculatedVat?.()) {
+    @if (!isCalculationLoading() && calculatedVat()) {
       <div class="result">
         <h3>Calculation Result</h3>
-        <p>Net Amount: {{ calculatedVat?.()?.netAmount | currency }}</p>
-        <p>Gross Amount: {{ calculatedVat?.()?.grossAmount | currency }}</p>
-        <p>VAT Amount: {{ calculatedVat?.()?.vatAmount | currency }}</p>
+        <p>Net Amount: {{ calculatedVat()?.netAmount | currency }}</p>
+        <p>Gross Amount: {{ calculatedVat()?.grossAmount | currency }}</p>
+        <p>VAT Amount: {{ calculatedVat()?.vatAmount | currency }}</p>
       </div>
     }
   </mat-card-content>

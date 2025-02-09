@@ -7,9 +7,8 @@ import {CalculatedVat} from './models/calculated-vat.model';
 import {tapResponse} from '@ngrx/operators';
 import {VatCalculationRequest} from './models/vat-calculation-request';
 
-
 type VatCalculationState = {
-  calculatedVat?: CalculatedVat,
+  calculatedVat: CalculatedVat,
   isLoading: boolean;
   error: string;
 };

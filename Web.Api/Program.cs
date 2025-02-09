@@ -7,11 +7,9 @@ builder.Services
     .AddApplication()
     .AddPresentation();
 
-builder.Services.AddControllers();
-
 var app = builder.Build();
 
-
+app.UseCors("AllowLocalhost");
 app.UseExceptionHandler();
 app.MapControllers();
 

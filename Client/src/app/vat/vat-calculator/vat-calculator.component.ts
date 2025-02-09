@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -16,6 +16,7 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {VatCalculationService} from '../vat-calculation.service';
 import {VatCalculationStore} from '../vat-calculation.store';
 import {VatCalculationRequest} from '../models/vat-calculation-request';
+import {LoadingComponent} from '../../shared/loading/loading.component';
 
 @Component({
   selector: 'app-vat-calculator',
@@ -28,10 +29,12 @@ import {VatCalculationRequest} from '../models/vat-calculation-request';
     MatInputModule,
     MatButtonModule,
     MatSnackBarModule,
+    LoadingComponent,
   ],
   templateUrl: './vat-calculator.component.html',
   styleUrls: ['./vat-calculator.component.scss'],
   providers: [VatCalculationStore],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VatCalculatorComponent {
   private readonly fb = inject(FormBuilder);
@@ -39,6 +42,7 @@ export class VatCalculatorComponent {
   private readonly store = inject(VatCalculationStore);
 
   readonly calculatedVat = this.store.calculatedVat;
+  readonly isCalculationLoading = this.store.isLoading;
 
   vatForm = this.fb.group({
     vatRate: ['', [Validators.required, Validators.pattern(/^(10|13|20)$/)]],
@@ -62,6 +66,11 @@ export class VatCalculatorComponent {
     }
 
     return null;
+  }
+
+  isFieldTouched(fieldName: string): boolean {
+    const control = this.vatForm.get(fieldName);
+    return control ? control.touched : false;
   }
 
   private getFormValues(): VatCalculationRequest {
